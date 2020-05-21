@@ -1,17 +1,18 @@
 package com.example.mybatisgenerator;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.Version;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.InjectionConfig;
 import com.baomidou.mybatisplus.generator.config.*;
+import com.baomidou.mybatisplus.generator.config.po.TableFill;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class CodeGenerator {
 
@@ -26,6 +27,10 @@ public class CodeGenerator {
         gc.setOutputDir(projectPath + "/src/main/java");
         gc.setAuthor("jobob");
         gc.setOpen(false);
+        gc.setBaseColumnList(true);
+        gc.setBaseResultMap(true);
+        //文件覆盖
+        gc.setFileOverride(true);
         // gc.setSwagger2(true); 实体属性 Swagger2 注解
         mpg.setGlobalConfig(gc);
 
@@ -111,9 +116,22 @@ public class CodeGenerator {
 //        strategy.setSuperControllerClass("你自己的父类控制器,没有就不用设置!");
         // 写于父类中的公共字段
         strategy.setSuperEntityColumns("id");
-        strategy.setInclude("area");
+        strategy.setInclude("open_account_online_application");
         strategy.setControllerMappingHyphenStyle(true);
+        //是否生成实体时，生成字段注解@TableField
+//        strategy.setEntityTableFieldAnnotationEnable(true);
         strategy.setTablePrefix(pc.getModuleName() + "_");
+        //乐观锁属性名称
+        strategy.setVersionFieldName("lock_version");
+        //逻辑删除属性名称
+        strategy.setLogicDeleteFieldName("record_status");
+        //表填充字段
+        List<TableFill> tableFills = new ArrayList<>();
+        tableFills.add(new TableFill("record_status", FieldFill.INSERT));
+        tableFills.add(new TableFill("lock_version", FieldFill.INSERT));
+        tableFills.add(new TableFill("create_time", FieldFill.INSERT));
+        tableFills.add(new TableFill("update_time", FieldFill.INSERT_UPDATE));
+        strategy.setTableFillList(tableFills);
         mpg.setStrategy(strategy);
         mpg.setTemplateEngine(new FreemarkerTemplateEngine());
         mpg.execute();
