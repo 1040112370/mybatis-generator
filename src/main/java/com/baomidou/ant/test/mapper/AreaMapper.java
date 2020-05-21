@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * </p>
  *
  * @author jobob
- * @since 2020-05-20
+ * @since 2020-05-21
  */
 public interface AreaMapper extends BaseMapper<Area> {
 

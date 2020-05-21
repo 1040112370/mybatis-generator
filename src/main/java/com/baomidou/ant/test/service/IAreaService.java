@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * </p>
  *
  * @author jobob
- * @since 2020-05-20
+ * @since 2020-05-21
  */
 public interface IAreaService extends IService<Area> {
 
